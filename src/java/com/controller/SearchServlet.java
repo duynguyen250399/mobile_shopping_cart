@@ -45,18 +45,17 @@ public class SearchServlet extends HttpServlet {
             if (minPrice.trim().length() > 0 && maxPrice.trim().length() > 0) {
                 double minPriceNumber = Double.parseDouble(minPrice);
                 double maxPriceNumber = Double.parseDouble(maxPrice);
-                
-                if(maxPriceNumber >= minPriceNumber){
-                    MobileDAO dao = new MobileDAO();
-                    
-                    dao.searchMobileDevicesInRange(minPriceNumber, maxPriceNumber);
-                    
-                    List<MobileDTO> result = dao.getMobileItems();
-                    
-                    request.setAttribute("searchResult", result);
-                    
-                    url = USER_VIEW_PAGE;
-                }
+
+                MobileDAO dao = new MobileDAO();
+
+                dao.searchMobileDevicesInRange(minPriceNumber, maxPriceNumber);
+
+                List<MobileDTO> result = dao.getMobileItems();
+
+                request.setAttribute("searchResult", result);
+
+                url = USER_VIEW_PAGE;
+
             }
 
         } finally {

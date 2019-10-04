@@ -50,7 +50,8 @@
                     <th>Year of Production</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Not Sale</th>                 
+                    <th>Not Sale</th>     
+                    <th>Add to Cart</th>                       
                 </tr>
             </thead>
             <tbody>
@@ -58,11 +59,18 @@
                     int count = 0;
                     for (MobileDTO dto : searchResult) {
                 %>
+            <form action="DispatcherServlet">
                 <tr>
                     <td><%= (++count)%></td>
-                    <td><%= dto.getMobileName()%></td>
-                    <td><%= dto.getYearOfProduction()%></td>
-                    <td><%= dto.getPrice()%></td>
+                    <td>
+                        <%= dto.getMobileName()%>                    
+                    </td>
+                    <td>
+                        <%= dto.getYearOfProduction()%>
+                    </td>
+                    <td>
+                        <%= dto.getPrice()%>
+                    </td>
                     <td><%= dto.getQuantity()%></td>
                     <td>
                         <input type="checkbox" <%
@@ -72,23 +80,32 @@
                                <%
                                    }
                                %>
-                    </td>                       
+                    </td>    
+                    <td>
+                        <%
+                            if (!dto.isNotSale()) {
+                        %>                   
+                        <input type="submit" value="Add to Cart" name="btnAction" />
+                        <%
+                            }
+                        %>
+                    </td>
                 </tr>
-                <%
-                    }
-                %>
+            </form>
+            <%                    }
+            %>
 
-            </tbody>
-        </table>
-        <%                } else {
-        %>
-        <h2>Mobile not found!</h2>
-        <%
-                }
+        </tbody>
+    </table>
+    <%                } else {
+    %>
+    <h2>Mobiles not found!</h2>
+    <%
             }
-        %>
+        }
+    %>
 
 
 
-    </body>
+</body>
 </html>

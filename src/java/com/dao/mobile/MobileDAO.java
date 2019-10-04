@@ -28,7 +28,7 @@ public class MobileDAO implements Serializable {
         try {
             con = DBConfig.makeConnection();
             if (con != null) {
-                String sql = "select mobileName, yearOfProduction, price, quantity, notSale "
+                String sql = "select mobileId, mobileName, yearOfProduction, price, quantity, notSale "
                         + "from tblMobile "
                         + "where price > ? and price < ?";
                 
@@ -40,6 +40,7 @@ public class MobileDAO implements Serializable {
                 rs = preStm.executeQuery();
                 
                 while(rs.next()){
+                    String mobileId = rs.getString("mobileId");
                     String mobileName = rs.getString("mobileName");
                     int yearOfProduction = rs.getInt("yearOfProduction");
                     double price = rs.getDouble("price");
@@ -47,6 +48,7 @@ public class MobileDAO implements Serializable {
                     boolean notSale = rs.getBoolean("notSale");
                     
                     MobileDTO dto = new MobileDTO();
+                    dto.setMobileId(mobileId);
                     dto.setMobileName(mobileName);
                     dto.setYearOfProduction(yearOfProduction);
                     dto.setPrice(price);
@@ -72,5 +74,5 @@ public class MobileDAO implements Serializable {
             }
         }
     }
-
+   
 }

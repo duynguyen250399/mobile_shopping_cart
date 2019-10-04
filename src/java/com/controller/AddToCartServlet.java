@@ -1,21 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-public class DispatcherServlet extends HttpServlet {
-
-//    private final String LOGIN_PAGE = "login.html";
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String START_UP_SERVLET = "StartupServlet";
-    private final String LOGOUT_SERVLET = "LogoutServlet";
-    private final String SEARCH_SERVLET = "SearchServlet";
-    private final String ADD_TO_CART_SERVLET = "AddToCartServlet";
+@WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCartServlet"})
+public class AddToCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -29,30 +29,14 @@ public class DispatcherServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String button = request.getParameter("btnAction");
-        String url = "";
-
-        try {
-            if (button == null) {
-                url = START_UP_SERVLET;
-            } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
-            }
-            else if(button.equals("Logout")){
-                url = LOGOUT_SERVLET;
-            }       
-            else if(button.equals("Search")){
-                url = SEARCH_SERVLET;
-            }
-            else if(button.equals("Add to Cart")){
-                
-            }
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        
+        try{
+            HttpSession session = request.getSession();
+            
         }
-
+        finally{
+            
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
