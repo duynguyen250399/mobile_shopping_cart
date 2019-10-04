@@ -1,26 +1,27 @@
-
 package com.controller;
 
-import com.dao.user.UserDAO;
+import com.dao.mobile.MobileDAO;
+import com.dto.mobile.MobileDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
+public class SearchServlet extends HttpServlet {
 
-    private final String USER_PAGE = "user.jsp";
-    private final String STAFF_PAGE = "staff.jsp";
-    private final String INVALID_PAGE = "invalid.html";
-    
+    private final String USER_SEARCH_PAGE = "user.jsp";
+    private final String USER_VIEW_PAGE = "user.jsp";
+    private final String STAFF_SEARCH_PAGE = "staff.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -31,42 +32,37 @@ public class LoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, NamingException, SQLException {
+            throws ServletException, IOException, SQLException, NamingException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-               
-        String username = request.getParameter("txtUsername");
-        int password = 0;
+
+        String minPrice = request.getParameter("txtSearchMinValue");
+        String maxPrice = request.getParameter("txtSearchMaxValue");
+
+        String url = USER_SEARCH_PAGE;
+
         try {
-            password = Integer.parseInt(request.getParameter("txtPassword"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-               
-        String url = INVALID_PAGE;
-        
-        UserDAO dao = new UserDAO();
-        
-        try {
-            int role = dao.authenticate(username, password);
-            if(role == 0){
-                url = USER_PAGE;
+
+            if (minPrice.trim().length() > 0 && maxPrice.trim().length() > 0) {
+                double minPriceNumber = Double.parseDouble(minPrice);
+                double maxPriceNumber = Double.parseDouble(maxPrice);
+                
+                if(maxPriceNumber >= minPriceNumber){
+                    MobileDAO dao = new MobileDAO();
+                    
+                    dao.searchMobileDevicesInRange(minPriceNumber, maxPriceNumber);
+                    
+                    List<MobileDTO> result = dao.getMobileItems();
+                    
+                    request.setAttribute("searchResult", result);
+                    
+                    url = USER_VIEW_PAGE;
+                }
             }
-            else if(role == 1 || role == 2){
-                url = STAFF_PAGE;
-            }
-            
-            Cookie cookie = new Cookie(username, String.valueOf(password));
-            cookie.setMaxAge(3 * 60);
-            response.addCookie(cookie);
+
+        } finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
-        finally{
-//            RequestDispatcher rd = request.getRequestDispatcher(url);
-//            rd.forward(request, response);
-            response.sendRedirect(url);
-            out.close();
-        }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,10 +79,10 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (NamingException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(SearchServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -103,10 +99,10 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (NamingException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SearchServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException ex) {
+            Logger.getLogger(SearchServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

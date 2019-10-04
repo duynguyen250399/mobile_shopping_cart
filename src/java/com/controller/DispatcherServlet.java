@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DispatcherServlet extends HttpServlet {
 
-    private final String LOGIN_PAGE = "login.html";
+//    private final String LOGIN_PAGE = "login.html";
     private final String LOGIN_SERVLET = "LoginServlet";
     private final String START_UP_SERVLET = "StartupServlet";
+    private final String LOGOUT_SERVLET = "LogoutServlet";
+    private final String SEARCH_SERVLET = "SearchServlet";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,9 +34,15 @@ public class DispatcherServlet extends HttpServlet {
 
         try {
             if (button == null) {
-                url = LOGIN_PAGE;
+                url = START_UP_SERVLET;
             } else if (button.equals("Login")) {
                 url = LOGIN_SERVLET;
+            }
+            else if(button.equals("Logout")){
+                url = LOGOUT_SERVLET;
+            }       
+            else if(button.equals("Search")){
+                url = SEARCH_SERVLET;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -1,10 +1,7 @@
-<%-- 
-    Document   : mobile_management
-    Created on : Sep 27, 2019, 9:11:04 AM
-    Author     : Admin
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="false"%>
+
 <!DOCTYPE html>
 <html>
     <head>
