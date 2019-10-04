@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/src/java/com/controller/DispatcherServlet.java</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/web/login.html</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/src/java/com/dto/mobile/MobileDTO.java</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/src/java/com/dao/user/UserDAO.java</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/src/java/com/dao/mobile/MobileDAO.java</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/web/user.jsp</file>
+            <file>file:/D:/Semester%204/Java%20Web%20Based-Application/Mobile_ShoppingCart/src/java/com/controller/LoginServlet.java</file>
+        </group>
+    </open-files>
 </project-private>

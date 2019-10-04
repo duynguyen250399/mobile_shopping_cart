@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page session="false" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,19 @@
         <title>Mobile Shopping Cart</title>
     </head>
     <body>
-        <h1>Hello, I am a user</h1>
+        <% 
+            Cookie[] cookies = request.getCookies();
+            String username = "";
+            if(cookies != null){
+                username = cookies[cookies.length - 1].getName();
+            }
+        %>
+        <p style="color: red">Welcome, <%= username %>!</p>       
+        <form>
+            <h2>Search mobile devices</h2>
+            <input type="number" name="txtSearchMinValue" placeholder="Min" /> 
+            <input type="number" name="txtSearchMaxValue" placeholder="Max" /> 
+            <input type="submit" name="btnAction" value="Search" />
+        </form>
     </body>
 </html>

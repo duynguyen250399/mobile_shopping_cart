@@ -1,4 +1,3 @@
-
 package com.controller;
 
 import java.io.IOException;
@@ -13,7 +12,8 @@ public class DispatcherServlet extends HttpServlet {
 
     private final String LOGIN_PAGE = "login.html";
     private final String LOGIN_SERVLET = "LoginServlet";
-    
+    private final String START_UP_SERVLET = "StartupServlet";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -26,20 +26,21 @@ public class DispatcherServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-      
+
         String button = request.getParameter("btnAction");
         String url = "";
-        
-        if(button == null){
-            url = LOGIN_PAGE;
+
+        try {
+            if (button == null) {
+                url = LOGIN_PAGE;
+            } else if (button.equals("Login")) {
+                url = LOGIN_SERVLET;
+            }
+        } finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
-        else if(button.equals("Login")){
-            url = LOGIN_SERVLET;
-        }
-        
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

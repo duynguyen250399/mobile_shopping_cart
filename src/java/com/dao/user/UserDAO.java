@@ -1,15 +1,17 @@
 package com.dao.user;
 
 import com.db.DBConfig;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.naming.NamingException;
 
-public class UserDAO {
+public class UserDAO implements Serializable{
 
     public int authenticate(String username, int password) 
-        throws SQLException, ClassNotFoundException{
+        throws SQLException, NamingException{
         Connection con = null;
         PreparedStatement preStm = null;
         ResultSet rs = null;
@@ -17,7 +19,7 @@ public class UserDAO {
         int role = -1;
 
         try {
-            con = DBConfig.getSQLServerConnection("sa", "123", 1433, "MobileDB");
+            con = DBConfig.makeConnection();
 
             if (con != null) {
                 String sql = "select userId, password, fullName, role "
@@ -48,4 +50,6 @@ public class UserDAO {
 
         return role;
     }
+    
+    
 }

@@ -22,6 +22,12 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>login.html</welcome-file>
+        <welcome-file>DispatcherServlet</welcome-file>
     </welcome-file-list>
+    <resource-ref>
+        <res-ref-name>MobileDataSource</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>
