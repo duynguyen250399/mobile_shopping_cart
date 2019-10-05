@@ -30,6 +30,8 @@ public class AddToCartServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        String userId = request.getParameter("userId");
+        
         String mobileId = request.getParameter("mobileId");
         String mobileName = request.getParameter("mobileName");
         String mobilePrice = request.getParameter("mobilePrice");
@@ -50,6 +52,7 @@ public class AddToCartServlet extends HttpServlet {
             
             // Drop order to cart
             cart.addMobileToCart(mobileId, mobileName, Double.parseDouble(mobilePrice));
+            cart.setUserID(userId);
             
             // update cart
             session.setAttribute("CART", cart);

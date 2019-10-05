@@ -1,25 +1,29 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.controller;
 
+import com.dao.order.OrderDAO;
+import com.dto.order.OrderDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DispatcherServlet extends HttpServlet {
+@WebServlet(name = "ViewShoppingHistoryServlet", urlPatterns = {"/ViewShoppingHistoryServlet"})
+public class ViewShoppingHistoryServlet extends HttpServlet {
 
-//    private final String LOGIN_PAGE = "login.html";
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String START_UP_SERVLET = "StartupServlet";
-    private final String LOGOUT_SERVLET = "LogoutServlet";
-    private final String SEARCH_SERVLET = "SearchServlet";
-    private final String ADD_TO_CART_SERVLET = "AddToCartServlet";
-    private final String VIEW_CART_PAGE = "viewcart.jsp";
-    private final String REMOVE_CART_ITEM_SERVLET = "RemoveCartItemServlet";
-    private final String CHECK_OUT_SERVLET = "CheckoutServlet";
-    private final String VIEW_SHOPPING_HISTORY_SERVLET = "ViewShoppingHistoryServlet";
+    private final String CART_HISTORY_PAGE = "cart_history.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,44 +35,26 @@ public class DispatcherServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NamingException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String button = request.getParameter("btnAction");
+        String userId = request.getParameter("userId");
+        
         String url = "";
 
         try {
-            if (button == null) {
-                url = START_UP_SERVLET;
-            } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
-            }
-            else if(button.equals("Logout")){
-                url = LOGOUT_SERVLET;
-            }       
-            else if(button.equals("Search")){
-                url = SEARCH_SERVLET;
-            }
-            else if(button.equals("Add to Cart")){
-                url = ADD_TO_CART_SERVLET;
-            }
-            else if(button.equals("Cart")){
-                url = VIEW_CART_PAGE;
-            }
-            else if(button.equals("Remove")){
-                url = REMOVE_CART_ITEM_SERVLET;
-            }
-            else if(button.equals("Check Out")){
-                url = CHECK_OUT_SERVLET;
-            }
-            else if(button.equals("ShoppingHistory")){
-                url = VIEW_SHOPPING_HISTORY_SERVLET;
-            }
+            OrderDAO dao = new OrderDAO();
+            dao.createOrders(userId);
+
+            List<OrderDTO> orders = dao.getOrders();
+            
+            request.setAttribute("Orders", orders);
+            
+            url = CART_HISTORY_PAGE;
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -83,7 +69,13 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(ViewShoppingHistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewShoppingHistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -97,7 +89,13 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (NamingException ex) {
+            Logger.getLogger(ViewShoppingHistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewShoppingHistoryServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

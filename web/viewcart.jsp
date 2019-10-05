@@ -40,8 +40,10 @@
             <tbody>
                 <%
                     int count = 0;
+                    int totalPrice = 0;
                     for (String itemId : items.keySet()) {
                         Order order = items.get(itemId);
+                        totalPrice += order.getPrice();
                 %>
                 <tr>
                     <td><%= (++count)%></td>
@@ -54,12 +56,23 @@
                             <input type="submit" name="btnAction" value="Remove" />
                         </form>
                     </td>
-
+                    <td>             
                 </tr>
                 <%
                     }
-
                 %>
+                    
+                <tr>
+                    <td colspan="5"><b>Total: </b><%= totalPrice %></td>                   
+                </tr>
+                
+                <tr>
+                    <td colspan="5">
+                        <form action="DispatcherServlet">
+                            <input style="width: 100%" type="submit" name="btnAction" value="Check Out" />
+                        </form>
+                    </td>                   
+                </tr>
             </tbody>
         </table>
         <%                        return;
@@ -68,6 +81,6 @@
             }
         %>
 
-        <h2 style="color: red">Cart does not exist!</h2>
+        <h2 style="color: red">Cart is empty!</h2>
     </body>
 </html>

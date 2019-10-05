@@ -26,10 +26,14 @@
         <%
             String logoutURL = "DispatcherServlet?btnAction=Logout";
             String viewCartURL = "DispatcherServlet?btnAction=Cart";
+            String shoppingHistoryURL = "DispatcherServlet?btnAction=ShoppingHistory"
+                    + "&userId=" + username;
         %>
         <p style="color: red;display: inline">Welcome, <%= username%>!</p>
-        <a href="<%= logoutURL%>" style="margin-left: 5px">Sign Out</a>
-        <a href="<%= viewCartURL%>" style="display: block;margin-top:10px">View Cart</a>
+        <a href="<%= logoutURL %>" style="margin-left: 5px">Sign Out</a>
+        <a href="<%= shoppingHistoryURL %>" style="margin-left:10px">Shopping History</a>
+        <a href="<%= viewCartURL %>" style="display: block;margin-top:10px">View Cart</a>
+        
         <form action="DispatcherServlet">
             <h2>Search mobile devices</h2>
             <input type="number" name="txtSearchMinValue" placeholder="Min Price" /> 
@@ -88,6 +92,7 @@
                             if (!dto.isNotSale()) {
                         %>                   
                         <form action="DispatcherServlet" method="POST">                          
+                            <input type="hidden" name="userId" value="<%= username %>" />
                             <input type="hidden" name="lastMinSearchValue" value="<%= minSearchValue%>" />
                             <input type="hidden" name="lastMaxSearchValue" value="<%= maxSearchValue%>" />
                             <input type="hidden" name="mobileId" value="<%= dto.getMobileId()%>" />
