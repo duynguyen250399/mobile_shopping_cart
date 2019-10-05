@@ -1,4 +1,3 @@
-
 package com.controller;
 
 import com.dao.user.UserDAO;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "StartupServlet", urlPatterns = {"/StartupServlet"})
 public class StartupServlet extends HttpServlet {
-    
+
     private final String LOGIN_PAGE = "login.html";
     private final String USER_PAGE = "user.jsp";
     private final String STAFF_PAGE = "staff.jsp";
@@ -35,33 +34,35 @@ public class StartupServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, NamingException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String url = LOGIN_PAGE;
-        
-        try{
+
+        try {
             // Read cookies
             Cookie[] cookies = request.getCookies();
-            if(cookies != null){
+            if (cookies != null) {
+                
+                int role = -1;
+                
                 for (Cookie cookie : cookies) {
                     String username = cookie.getName();
                     String password = cookie.getValue();
-                    
+
                     // Call DAO to check login
-                    UserDAO dao = new UserDAO();
-                    int role = dao.authenticate(username, Integer.parseInt(password));
-                    
-                    if(role == 0){
-                        url = USER_PAGE;
+                    if (password.matches("\\d+")) {
+                        UserDAO dao = new UserDAO();
+                        role = dao.authenticate(username, password);
                     }
-                    else if(role == 1 || role == 2){
+
+                    if (role == 0) {
+                        url = USER_PAGE;
+                    } else if (role == 1 || role == 2) {
                         url = STAFF_PAGE;
                     }
                 }
             }
-          
-            
-        }
-        finally{
+
+        } finally {
             response.sendRedirect(url);
         }
     }
@@ -77,7 +78,7 @@ public class StartupServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException{
+            throws ServletException, IOException {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {

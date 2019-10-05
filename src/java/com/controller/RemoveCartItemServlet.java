@@ -1,11 +1,12 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.controller;
 
 import com.cart.Cart;
-import com.order.Order;
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,9 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCartServlet"})
-public class AddToCartServlet extends HttpServlet {
-       
+/**
+ *
+ * @author Admin
+ */
+@WebServlet(name = "RemoveCartItemServlet", urlPatterns = {"/RemoveCartItemServlet"})
+public class RemoveCartItemServlet extends HttpServlet {
+    
+    private final String VIEW_CART_PAGE = "viewcart.jsp";
+    private final String USER_SEARCH_PAGE = "user.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,37 +38,34 @@ public class AddToCartServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String mobileId = request.getParameter("mobileId");
-        String mobileName = request.getParameter("mobileName");
-        String mobilePrice = request.getParameter("mobilePrice");
-        
-        String lastMinSearchValue = request.getParameter("lastMinSearchValue");
-        String lastMaxSearchValue = request.getParameter("lastMaxSearchValue");
         
         String url = "";
-        
+       
         try{
-            HttpSession session = request.getSession(true);
-           
-            // Get cart
-            Cart cart = (Cart) session.getAttribute("CART");
-            if(cart == null){
-                cart = new Cart();
+            HttpSession session = request.getSession();
+            if(session != null){
+                Cart cart = (Cart) session.getAttribute("CART");
+                
+                if(cart != null){
+                    if(cart.getItems() != null){ 
+                        cart.removeMobileFromCart(mobileId);
+                        
+                        if(!cart.getItems().isEmpty()){
+                            
+                            session.setAttribute("CART", cart);
+                            url = VIEW_CART_PAGE;
+                        }
+                        else{
+                            session.invalidate();
+                            url = USER_SEARCH_PAGE;
+                        }
+                    
+                    }
+                }
             }
-            
-            // Drop order to cart
-            cart.addMobileToCart(mobileId, mobileName, Double.parseDouble(mobilePrice));
-            
-            // update cart
-            session.setAttribute("CART", cart);
         }
         finally{
-            url = "DispatcherServlet?btnAction=Search&"
-                    + "txtSearchMinValue=" + lastMinSearchValue
-                    + "&txtSearchMaxValue=" + lastMaxSearchValue;
-            
             response.sendRedirect(url);
-//            RequestDispatcher rd = request.getRequestDispatcher(url);
-//            rd.forward(request, response);
         }
     }
 

@@ -10,13 +10,21 @@ import javax.naming.NamingException;
 
 public class UserDAO implements Serializable{
 
-    public int authenticate(String username, int password) 
+    public int authenticate(String username, String password) 
         throws SQLException, NamingException{
         Connection con = null;
         PreparedStatement preStm = null;
         ResultSet rs = null;
         
         int role = -1;
+        
+        int passwordToInt;
+        
+        try {
+            passwordToInt = Integer.parseInt(password);
+        } catch (NumberFormatException e) {
+            return role;
+        }
 
         try {
             con = DBConfig.makeConnection();
@@ -26,7 +34,7 @@ public class UserDAO implements Serializable{
                     + "from tblUser where userId = ? and password = ?";
                 preStm = con.prepareStatement(sql);
                 preStm.setString(1, username);
-                preStm.setInt(2, password);
+                preStm.setInt(2, passwordToInt);
                 
                 rs = preStm.executeQuery();
                 

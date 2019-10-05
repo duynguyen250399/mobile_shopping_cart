@@ -20,14 +20,16 @@
             Cookie[] cookies = request.getCookies();
             String username = "";
             if (cookies != null) {
-                username = cookies[cookies.length - 1].getName();
+                username = cookies[0].getName();             
             }
         %>
         <%
             String logoutURL = "DispatcherServlet?btnAction=Logout";
+            String viewCartURL = "DispatcherServlet?btnAction=Cart";
         %>
-        <p style="color: red">Welcome, <%= username%>!</p>
-        <a href="<%= logoutURL%>">Sign Out</a>
+        <p style="color: red;display: inline">Welcome, <%= username%>!</p>
+        <a href="<%= logoutURL%>" style="margin-left: 5px">Sign Out</a>
+        <a href="<%= viewCartURL%>" style="display: block;margin-top:10px">View Cart</a>
         <form action="DispatcherServlet">
             <h2>Search mobile devices</h2>
             <input type="number" name="txtSearchMinValue" placeholder="Min Price" /> 
@@ -48,7 +50,7 @@
                     <th>No.</th>
                     <th>Mobile Name</th>
                     <th>Year of Production</th>
-                    <th>Price</th>
+                    <th>Price($)</th>
                     <th>Quantity</th>
                     <th>Not Sale</th>     
                     <th>Add to Cart</th>                       
@@ -85,7 +87,14 @@
                         <%
                             if (!dto.isNotSale()) {
                         %>                   
-                        <input type="submit" value="Add to Cart" name="btnAction" />
+                        <form action="DispatcherServlet" method="POST">                          
+                            <input type="hidden" name="lastMinSearchValue" value="<%= minSearchValue%>" />
+                            <input type="hidden" name="lastMaxSearchValue" value="<%= maxSearchValue%>" />
+                            <input type="hidden" name="mobileId" value="<%= dto.getMobileId()%>" />
+                            <input type="hidden" name="mobileName" value="<%= dto.getMobileName()%>" />
+                            <input type="hidden" name="mobilePrice" value="<%= dto.getPrice()%>" />                            
+                            <input type="submit" value="Add to Cart" name="btnAction" />
+                        </form>
                         <%
                             }
                         %>

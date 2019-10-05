@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "SearchServlet", urlPatterns = {"/SearchServlet"})
 public class SearchServlet extends HttpServlet {
-
+    
     private final String USER_SEARCH_PAGE = "user.jsp";
     private final String USER_VIEW_PAGE = "user.jsp";
     private final String STAFF_SEARCH_PAGE = "staff.jsp";
@@ -34,33 +34,34 @@ public class SearchServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, NamingException {
         response.setContentType("text/html;charset=UTF-8");
-
+        
         String minPrice = request.getParameter("txtSearchMinValue");
         String maxPrice = request.getParameter("txtSearchMaxValue");
-
+        
         String url = USER_SEARCH_PAGE;
-
+        
         try {
-
+            
             if (minPrice.trim().length() > 0 && maxPrice.trim().length() > 0) {
                 double minPriceNumber = Double.parseDouble(minPrice);
                 double maxPriceNumber = Double.parseDouble(maxPrice);
-
+                
                 MobileDAO dao = new MobileDAO();
-
+                
                 dao.searchMobileDevicesInRange(minPriceNumber, maxPriceNumber);
-
+                
                 List<MobileDTO> result = dao.getMobileItems();
-
+                
                 request.setAttribute("searchResult", result);
-
+                
                 url = USER_VIEW_PAGE;
-
+                
             }
-
+            
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
+//            response.sendRedirect(url);
         }
     }
 

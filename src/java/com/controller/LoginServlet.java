@@ -1,4 +1,3 @@
-
 package com.controller;
 
 import com.dao.user.UserDAO;
@@ -20,7 +19,7 @@ public class LoginServlet extends HttpServlet {
     private final String USER_PAGE = "user.jsp";
     private final String STAFF_PAGE = "staff.jsp";
     private final String INVALID_PAGE = "invalid.html";
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,39 +33,35 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException, NamingException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-               
+
         String username = request.getParameter("txtUsername");
-        int password = 0;
-        try {
-            password = Integer.parseInt(request.getParameter("txtPassword"));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-               
+        String password = request.getParameter("txtPassword");
+             
         String url = INVALID_PAGE;
-        
-        UserDAO dao = new UserDAO();
-        
+
+        int role = -1;
+
         try {
-            int role = dao.authenticate(username, password);
-            if(role == 0){
-                url = USER_PAGE;
+            UserDAO dao = new UserDAO();
+            role = dao.authenticate(username, password);
+            if (role != -1) {
+                if (role == 0) {
+                    url = USER_PAGE;
+                } else if (role == 1 || role == 2) {
+                    url = STAFF_PAGE;
+                }
+                Cookie cookie = new Cookie(username, password);
+                cookie.setMaxAge(60 * 60 * 3);
+                response.addCookie(cookie);
             }
-            else if(role == 1 || role == 2){
-                url = STAFF_PAGE;
-            }
-            
-            Cookie cookie = new Cookie(username, String.valueOf(password));
-            cookie.setMaxAge(3 * 60);
-            response.addCookie(cookie);
-        }
-        finally{
+
+        } finally {
 //            RequestDispatcher rd = request.getRequestDispatcher(url);
 //            rd.forward(request, response);
             response.sendRedirect(url);
             out.close();
         }
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
