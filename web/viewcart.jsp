@@ -22,7 +22,7 @@
                 // Get cart
                 Cart cart = (Cart) session.getAttribute("CART");
                 if (cart != null) {
-                    Map<String, Order> items = cart.getItems();                    
+                    Map<String, Order> items = cart.getItems();
                     if (items != null) {
         %>
         <h1>Your cart</h1>
@@ -61,11 +61,11 @@
                 <%
                     }
                 %>
-                    
+
                 <tr>
-                    <td colspan="5"><b>Total: </b><%= totalPrice %></td>                   
+                    <td colspan="5"><b>Total: </b><%= totalPrice%>$</td>                   
                 </tr>
-                
+
                 <tr>
                     <td colspan="5">
                         <form action="DispatcherServlet">
@@ -75,7 +75,8 @@
                 </tr>
             </tbody>
         </table>
-        <%                        return;
+        <%
+                        return;
                     }
                 }
             }

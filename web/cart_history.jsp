@@ -23,7 +23,7 @@
                 if (orders != null) {
                     for (OrderDTO dto : orders) {
             %>
-            <li>You bought <%= dto.getQuantity()%> <%= dto.getMobileName()%>, total: <%= dto.getPrice()%> at <%= dto.getBuyDate() %></li>
+            <li>You bought <%= dto.getQuantity()%> <%= dto.getMobileName()%>, total: <%= dto.getPrice()%> at <b><%= dto.getBuyDate() %></b></li>
                 <%
                         }
                     }
